@@ -18,18 +18,18 @@ namespace eMovies.NewFolder
            
         }
 
-        public  void Add(Actor actor)
+        public async  Task Add(Actor actor)
         {
             if(actor != null)
             {
-                 _context.Actors.Add(actor);
-                 _context.SaveChanges();
+               await  _context.Actors.AddAsync(actor);
+                await _context.SaveChangesAsync();
 
             }
             
         }
 
-        public  void Delete(int id)
+        public async Task Delete(int id)
         {
             
             
@@ -37,7 +37,7 @@ namespace eMovies.NewFolder
               if (actor != null)
                 {
                     _context.Actors.Remove(actor);
-                     _context.SaveChangesAsync();
+                    await  _context.SaveChangesAsync();
 
                 }
 
@@ -71,7 +71,7 @@ namespace eMovies.NewFolder
                 await _context.SaveChangesAsync();
                 
             }
-            return actor;
+            return actor; 
         }
     }
 }

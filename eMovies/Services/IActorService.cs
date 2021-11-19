@@ -11,9 +11,9 @@ namespace eMovies.NewFolder
         IEnumerable<Actor> GetAll();
         Task<Actor> GetById(int Id);
 
-        void Add(Actor actor);
+        Task Add(Actor actor);
         Task<Actor> Update(int id, Actor actor);
-        void Delete(int id);
+        Task Delete(int id);
 
     }
 }
