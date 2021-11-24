@@ -11,8 +11,8 @@ using eMovies.Data;
 namespace eMovies.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211116194312_initial")]
-    partial class initial
+    [Migration("20211123212048_Initial Migration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

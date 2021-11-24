@@ -1,4 +1,5 @@
 ﻿
+using eMovies.BaseRepositoryService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace eMovies.Models
 {
-    public class Actor 
+    public class Actor : IEntityBase
     {
         [Key]
         public int Id { get; set; }

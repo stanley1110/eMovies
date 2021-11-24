@@ -1,4 +1,5 @@
 ﻿
+using eMovies.BaseRepositoryService;
 using eMovies.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace eMovies.Models
 {
-    public class Movie 
+    public class Movie : IEntityBase
     {
         [Key]
         public int Id { get; set; }
