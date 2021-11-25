@@ -1,4 +1,3 @@
-
 using eMovies.Data;
 using eMovies.Interface;
 using eMovies.Models;
@@ -18,7 +17,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
 namespace eMovies
 {
     public class Startup
@@ -33,6 +31,11 @@ namespace eMovies
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //DbContext configuration
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("USSDCon")));
+
+            //Services configuration
             services.AddScoped<IActorsService, ActorsService>();
             services.AddScoped<IProducersService, ProducersService>();
             services.AddScoped<ICinemasService, CinemasService>();
@@ -52,9 +55,6 @@ namespace eMovies
             });
 
             services.AddControllersWithViews();
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString
-                ("USSDCon")));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +80,7 @@ namespace eMovies
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -90,7 +91,7 @@ namespace eMovies
 
             //Seed database
             AppDbInitializer.Seed(app);
-           // AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
+           AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
         }
     }
 }

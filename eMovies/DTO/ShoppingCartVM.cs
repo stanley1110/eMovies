@@ -11,5 +11,6 @@ namespace eMovies.DTO
     {
         public ShoppingCartService ShoppingCart { get; set; }
         public double ShoppingCartTotal { get; set; }
+
     }
 }

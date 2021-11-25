@@ -1,7 +1,7 @@
 ﻿@model Movie
 
 @{
-    ViewData["Title"] = "Movie details";
+    ViewData["Title"] = "eMovie details";
 }
 
 <div class="row">
@@ -9,7 +9,7 @@
         <div class="card mb-12">
             <div class="row g-0">
                 <div class="col-md-12">
-                    <div class="card-header text-white bg-info">
+                    <div class="card-header text-center text-white bg-light">
                         <p class="card-text">
                             <h5 class="card-title">
                                 @Model.Name
@@ -60,7 +60,7 @@
                                 @foreach (var actor in Model.Actors_Movies)
                                 {
                                     <div class="column text-center">
-                                        <img class="border-info rounded-circle" src="@actor.Actor.ProfilePictureURL" style="max-width: 150px" />
+                                        <img class="border-info rounded" src="@actor.Actor.ProfilePictureURL" style="max-width: 150px" />
                                         <br />
                                         <a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.ActorId">@actor.Actor.FullName</a>
                                     </div>
