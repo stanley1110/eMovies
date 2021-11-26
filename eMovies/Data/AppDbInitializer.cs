@@ -1,18 +1,21 @@
 ﻿
+using eMovies.DTO;
 using eMovies.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace eMovies.Data
 {
     public class AppDbInitializer
     {
-        public static void Seed(IApplicationBuilder applicationBuilder)
+        public async static void Seed(IApplicationBuilder applicationBuilder)
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
@@ -139,81 +142,40 @@ namespace eMovies.Data
                 //Movies
                 if (!context.Movies.Any())
                 {
-                    context.Movies.AddRange(new List<Movie>()
+                   
+                    var random = new Random();
+                    
+                    var result = await GetModelDto();
+
+
+                    string base_url = "https://image.tmdb.org/t/p/original/";
+                    List<Movie> movies = new List<Movie>();
+                    foreach (Result item in result)
                     {
-                        new Movie()
+                        var item1 = new Movie()
                         {
-                            Name = "Life",
-                            Description = "This is the Life movie description",
-                            Price = 39.50,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-3.jpeg",
-                            StartDate = DateTime.Now.AddDays(-10),
-                            EndDate = DateTime.Now.AddDays(10),
-                            CinemaId = 3,
-                            ProducerId = 3,
-                            MovieCategory = MovieCategory.Documentary
-                        },
-                        new Movie()
-                        {
-                            Name = "The Shawshank Redemption",
-                            Description = "This is the Shawshank Redemption description",
-                            Price = 29.50,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-1.jpeg",
-                            StartDate = DateTime.Now,
-                            EndDate = DateTime.Now.AddDays(3),
-                            CinemaId = 1,
-                            ProducerId = 1,
-                            MovieCategory = MovieCategory.Action
-                        },
-                        new Movie()
-                        {
-                            Name = "Ghost",
-                            Description = "This is the Ghost movie description",
-                            Price = 39.50,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-4.jpeg",
-                            StartDate = DateTime.Now,
-                            EndDate = DateTime.Now.AddDays(7),
-                            CinemaId = 4,
-                            ProducerId = 4,
-                            MovieCategory = MovieCategory.Horror
-                        },
-                        new Movie()
-                        {
-                            Name = "Race",
-                            Description = "This is the Race movie description",
-                            Price = 39.50,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-6.jpeg",
-                            StartDate = DateTime.Now.AddDays(-10),
-                            EndDate = DateTime.Now.AddDays(-5),
-                            CinemaId = 1,
-                            ProducerId = 2,
-                            MovieCategory = MovieCategory.Documentary
-                        },
-                        new Movie()
-                        {
-                            Name = "Scoob",
-                            Description = "This is the Scoob movie description",
-                            Price = 39.50,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-7.jpeg",
-                            StartDate = DateTime.Now.AddDays(-10),
-                            EndDate = DateTime.Now.AddDays(-2),
-                            CinemaId = 1,
-                            ProducerId = 3,
-                            MovieCategory = MovieCategory.Cartoon
-                        },
-                        new Movie()
-                        {
-                            Name = "Cold Soles",
-                            Description = "This is the Cold Soles movie description",
-                            Price = 39.50,
-                            ImageURL = "http://dotnethow.net/images/movies/movie-8.jpeg",
-                            StartDate = DateTime.Now.AddDays(3),
-                            EndDate = DateTime.Now.AddDays(20),
-                            CinemaId = 1,
-                            ProducerId = 5,
-                            MovieCategory = MovieCategory.Drama
-                        }
-                    });
+                            Description = item.overview,
+                            StartDate = Convert.ToDateTime(item.release_date) ,
+                            EndDate = Convert.ToDateTime(item.release_date).AddDays(100),
+                            ImageURL = base_url + item.poster_path,
+                            Name = item.original_title ?? "Unavailable",
+                             Price = item.popularity,
+                              CinemaId = random.Next(1,4),
+                               ProducerId = random.Next(1,5)
+
+
+
+
+
+                        };
+                        
+                            context.Movies.Add(item1);
+                        
+
+
+                    }
+                  
+                        
                     context.SaveChanges();
                 }
                 //Actors & Movies
@@ -320,6 +282,36 @@ namespace eMovies.Data
             }
 
         }
+        static async Task<List<Result>> GetModelDto()
+        {
+            List<Result> Data = null;
+            ResultRoot Data1 = null;
+
+            string apikey = "c79aacd509c3866773d5210111cdf15d";
+
+            string requestUrl = "https://api.themoviedb.org/3//trending/all/week?api_key=c79aacd509c3866773d5210111cdf15d";
+            //   Data = await _genericRepository.GetAsync<Employee>(requestUrl);
+            //var content = new StringContent(
+            //JsonConvert.SerializeObject(benefitreq), Encoding.UTF8, "application/json");
+
+            var client = new HttpClient();
+            //// client.DefaultRequestHeaders.Add(GlobalVariables.strTokenKey, GlobalVariables.strTokenValue);
+
+            //client.DefaultRequestHeaders.Add("apikey", apikey);
+            var response = await client.GetAsync(requestUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+
+
+                string Rescontent = await response.Content.ReadAsStringAsync();
+
+                var result = JsonConvert.DeserializeObject<ResultRoot>(Rescontent);
+                Data = result.results;
+
+            }
+            return Data;
+        }
         public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
@@ -369,5 +361,6 @@ namespace eMovies.Data
                 }
             }
         }
+
     }
 }

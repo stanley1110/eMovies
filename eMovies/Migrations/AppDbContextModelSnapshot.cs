@@ -301,7 +301,7 @@ namespace eMovies.Migrations
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MovieCategory")
+                    b.Property<int?>("MovieCategory")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")

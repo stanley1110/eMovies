@@ -104,7 +104,7 @@ namespace eTickets.Controllers
                 StartDate = movieDetails.StartDate,
                 EndDate = movieDetails.EndDate,
                 ImageURL = movieDetails.ImageURL,
-                MovieCategory = movieDetails.MovieCategory,
+                MovieCategory = movieDetails.MovieCategory ?? MovieCategory.Action ,
                 CinemaId = movieDetails.CinemaId,
                 ProducerId = movieDetails.ProducerId,
                 ActorIds = movieDetails.Actors_Movies.Select(n => n.ActorId).ToList(),

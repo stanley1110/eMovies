@@ -10,8 +10,8 @@ using eMovies.Data;
 namespace eMovies.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211124082725_initial3")]
-    partial class initial3
+    [Migration("20211126074443_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -303,7 +303,7 @@ namespace eMovies.Migrations
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MovieCategory")
+                    b.Property<int?>("MovieCategory")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
